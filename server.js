@@ -9,7 +9,9 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
-app.use(cors());
+app.use(cors({
+    origin: 'https://tutorji.netlify.app'
+  }));  
 app.use(bodyParser.json());
 app.use('/uploads', express.static('uploads'));
 app.use('/api/users', userRouter);

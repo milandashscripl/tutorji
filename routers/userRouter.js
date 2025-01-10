@@ -1,13 +1,18 @@
 const express = require('express');
 const multer = require('multer');
+const path = require('path');
 const { registerUser, loginUser, getUserProfile } = require('../controllers/userController');
 const router = express.Router();
 
 // Multer configuration for profile picture upload
 const storage = multer.diskStorage({
-    destination: (req, file, cb) => cb(null, './uploads'),
-    filename: (req, file, cb) => cb(null, Date.now() + '-' + file.originalname),
-});
+    destination: (req, file, cb) => {
+      cb(null, path.join(__dirname, 'uploads'));
+    },
+    filename: (req, file, cb) => {
+      cb(null, Date.now() + '-' + file.originalname);
+    },
+  });
 const upload = multer({ storage });
 
 // Routes
