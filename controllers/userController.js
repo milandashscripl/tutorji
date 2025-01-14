@@ -84,16 +84,16 @@ exports.loginUser = async (req, res) => {
 };
 
 
-exports.getUserProfile = async (req, res) => {
-  try {
-      const user = await User.findById(req.params.id);
-      if (!user) return res.status(404).json({ message: "User not found" });
+// exports.getUserProfile = async (req, res) => {
+//   try {
+//       const user = await User.findById(req.params.id);
+//       if (!user) return res.status(404).json({ message: "User not found" });
 
-      res.json(user);
-  } catch (err) {
-      res.status(500).json({ error: err.message });
-  }
-};
+//       res.json(user);
+//   } catch (err) {
+//       res.status(500).json({ error: err.message });
+//   }
+// };
 
 
 
@@ -123,4 +123,31 @@ exports.getUserProfile = async (req, res) => {
 //     }
 //   };
 
+  
+
+exports.getUserProfile = async (req, res) => {
+    try {
+      const user = await User.findById(req.params.id);
+  
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+  
+      // Add full URL for profilePicture
+      const profilePictureUrl = user.profilePicture
+        ? `https://yourdomain.com/uploads/${user.profilePicture}`
+        : null;
+  
+      res.json({
+        name: user.name,
+        email: user.email,
+        contact: user.contact,
+        aadhar: user.aadhar,
+        address: user.address,
+        profilePicture: profilePictureUrl,
+      });
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  };
   
