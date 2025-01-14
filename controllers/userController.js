@@ -26,55 +26,6 @@ exports.registerUser = async (req, res) => {
 };
 
 
-// exports.loginUser = async (req, res) => {
-//     try {
-//       const { email, password } = req.body;
-//       const user = await User.findOne({ email });
-  
-//       if (!user || !(await bcrypt.compare(password, user.password))) {
-//         return res.status(401).json({ message: "Invalid credentials" });
-//       }
-  
-//       const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-  
-//       res.json({
-//         token,
-//         user: {
-//           id: user._id,
-//           name: user.name,
-//           email: user.email,
-//           contact: user.contact,
-//           aadhar: user.aadhar,
-//           address: user.address,
-//           profilePicture: user.profilePicture,
-//         },
-//       });
-//     } catch (err) {
-//       res.status(500).json({ error: err.message });
-//     }
-//   };
-
-
-
-
-// Login User
-// exports.loginUser = async (req, res) => {
-//     try {
-//         const { email, password } = req.body;
-//         const user = await User.findOne({ email });
-
-//         if (!user || !(await bcrypt.compare(password, user.password))) {
-//             return res.status(401).json({ message: "Invalid credentials" });
-//         }
-
-//         const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-//         res.json({ token, userId: user._id });
-//     } catch (err) {
-//         res.status(500).json({ error: err.message });
-//     }
-// };
-
-
 
 
 // Login User
