@@ -98,7 +98,7 @@ exports.loginUser = async (req, res) => {
                 contact: user.contact,
                 aadhar: user.aadhar,
                 address: user.address,
-                profilePicture: user.profilePicture,
+                profilePicture: `https://tutroji.onrender.com/${user.profilePicture}`,
             },
             userId: user._id, // Include userId for backward compatibility
         });
