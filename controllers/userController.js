@@ -106,7 +106,7 @@ exports.getUserProfile = async (req, res) => {
       }
   
       // Add full URL for profilePicture
-      const profilePictureUrl = user.profilePicture
+       profilePictureUrl = user.profilePicture
         ? `https://tutorji.onrender.com/uploads/${user.profilePicture}`
         : null;
   
