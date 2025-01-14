@@ -34,9 +34,6 @@ exports.loginUser = async (req, res) => {
     try {
         const { email, password } = req.body;
         const user = await User.findOne({ email });
-        profilePictureUrl = user.profilePicture
-        ? `https://tutroji.onrender.com/uploads/${user.profilePicture}`
-         : null;
         if (!user || !(await bcrypt.compare(password, user.password))) {
             return res.status(401).json({ message: "Invalid credentials" });
         }
