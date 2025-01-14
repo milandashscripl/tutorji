@@ -3,6 +3,31 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 // Register User
+// exports.registerUser = async (req, res) => {
+//     try {
+//         const { name, email, contact, aadhar, address, password } = req.body;
+//         const hashedPassword = await bcrypt.hash(password, 10);
+
+//         const newUser = new User({
+//             name,
+//             email,
+//             contact,
+//             aadhar,
+//             address,
+//             profilePicture: req.file ? req.file.filename : '',
+//             password: hashedPassword,
+//         });
+
+//         await newUser.save();
+//         res.status(201).json({ message: "User registered successfully!" });
+//     } catch (err) {
+//         res.status(400).json({ error: err.message });
+//     }
+// };
+
+
+
+// Register User
 exports.registerUser = async (req, res) => {
     try {
         const { name, email, contact, aadhar, address, password } = req.body;
@@ -59,13 +84,43 @@ exports.loginUser = async (req, res) => {
 };
 
 
-exports.getUserProfile = async (req, res) => {
-  try {
-      const user = await User.findById(req.params.id);
-      if (!user) return res.status(404).json({ message: "User not found" });
+// exports.getUserProfile = async (req, res) => {
+//   try {
+//       const user = await User.findById(req.params.id);
+//       if (!user) return res.status(404).json({ message: "User not found" });
 
-      res.json(user);
-  } catch (err) {
+//       res.json(user);
+//   } catch (err) {
+//       res.status(500).json({ error: err.message });
+//   }
+// };
+
+
+
+exposrts.getUserProfile = async (req, res) => {
+    try {
+      const user = await User.findById(req.params.id);
+  
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+  
+      // Add full URL for profilePicture
+      const profilePictureUrl = user.profilePicture
+        ? `https://tutorji.onrender.com/uploads/${user.profilePicture}`
+        : null;
+  
+      res.json({
+        name: user.name,
+        email: user.email,
+        contact: user.contact,
+        aadhar: user.aadhar,
+        address: user.address,
+        profilePicture: profilePictureUrl,
+      });
+    } catch (err) {
       res.status(500).json({ error: err.message });
-  }
-};
+    }
+  };
+
+  
