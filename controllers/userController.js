@@ -97,7 +97,7 @@ exports.loginUser = async (req, res) => {
 
 
 
-exposrts.getUserProfile = async (req, res) => {
+exports.getUserProfile = async (req, res) => {
     try {
       const user = await User.findById(req.params.id);
   
