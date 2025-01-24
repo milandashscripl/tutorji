@@ -204,36 +204,3 @@ exports.getUserProfile = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
-
-
-
-
-
-// Update User
-// exports.updateUser = async (req, res) => {
-//   try {
-//     const userId = req.params.id; // Extract user ID from params
-//     const updates = req.body; // Extract other updates from the request body
-
-//     if (req.file) {
-//       // If a new profile picture is uploaded, add its URL to updates
-//       updates.profilePicture = req.file.path;
-//     }
-
-//     const updatedUser = await User.findByIdAndUpdate(userId, updates, {
-//       new: true, // Return the updated user
-//       runValidators: true, // Validate updates against the schema
-//     });
-
-//     if (!updatedUser) {
-//       return res.status(404).json({ message: "User not found" });
-//     }
-
-//     res.json({
-//       message: "User updated successfully",
-//       user: updatedUser,
-//     });
-//   } catch (err) {
-//     res.status(500).json({ error: err.message });
-//   }
-// };
