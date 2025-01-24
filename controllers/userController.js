@@ -213,20 +213,26 @@ exports.updateUser = async (req, res) => {
   try {
     const userId = req.params.id;
 
-    // Collect updated data from the request
+    // Collect updated data from the request body
     const updatedData = {
       name: req.body.name,
+      email: req.body.email,
       contact: req.body.contact,
       aadhar: req.body.aadhar,
       address: req.body.address,
     };
 
-    // If a new profile picture is uploaded, add its Cloudinary URL
+    // If a new profile picture is uploaded, update it
     if (req.file) {
-      updatedData.profilePicture = req.file.path;
+      updatedData.profilePicture = req.file.path; // Cloudinary or file path
     }
 
-    // Remove undefined fields from `updatedData`
+    // Hash password if provided
+    if (req.body.password) {
+      updatedData.password = await bcrypt.hash(req.body.password, 10);
+    }
+
+    // Remove undefined fields
     Object.keys(updatedData).forEach((key) => {
       if (updatedData[key] === undefined) {
         delete updatedData[key];
@@ -245,3 +251,4 @@ exports.updateUser = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
