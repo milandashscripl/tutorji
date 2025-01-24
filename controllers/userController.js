@@ -208,31 +208,40 @@ exports.getUserProfile = async (req, res) => {
 
 
 
-
 // Update User
 exports.updateUser = async (req, res) => {
   try {
-    const userId = req.params.id; // Extract user ID from params
-    const updates = req.body; // Extract other updates from the request body
+    const userId = req.params.id;
 
+    // Collect updated data from the request
+    const updatedData = {
+      name: req.body.name,
+      email: req.body.email,
+      contact: req.body.contact,
+      aadhar: req.body.aadhar,
+      address: req.body.address,
+    };
+
+    // If a new profile picture is uploaded, add its Cloudinary URL
     if (req.file) {
-      // If a new profile picture is uploaded, add its URL to updates
-      updates.profilePicture = req.file.path;
+      updatedData.profilePicture = req.file.path;
     }
 
-    const updatedUser = await User.findByIdAndUpdate(userId, updates, {
-      new: true, // Return the updated user
-      runValidators: true, // Validate updates against the schema
+    // Remove undefined fields from `updatedData`
+    Object.keys(updatedData).forEach((key) => {
+      if (updatedData[key] === undefined) {
+        delete updatedData[key];
+      }
     });
 
-    if (!updatedUser) {
-      return res.status(404).json({ message: "User not found" });
+    // Update the user in the database
+    const user = await User.findByIdAndUpdate(userId, updatedData, { new: true });
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
     }
 
-    res.json({
-      message: "User updated successfully",
-      user: updatedUser,
-    });
+    res.json({ message: 'User updated successfully!', user });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
