@@ -216,7 +216,6 @@ exports.updateUser = async (req, res) => {
     // Collect updated data from the request
     const updatedData = {
       name: req.body.name,
-      email: req.body.email,
       contact: req.body.contact,
       aadhar: req.body.aadhar,
       address: req.body.address,
