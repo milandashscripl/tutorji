@@ -46,7 +46,7 @@ router.post('/register', upload.single('profilePicture'), registerUser);
 router.post('/login', loginUser);
 router.get('/profile/:id', getUserProfile);
 // Update User route
-router.put('/update/:id', upload.single('profilePicture'), updateUser);
+router.post('/update/:id', upload.single('profilePicture'), updateUser);
 
 
 module.exports = router;
