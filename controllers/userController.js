@@ -96,7 +96,7 @@ const jwt = require('jsonwebtoken');
 // Register User
 exports.registerUser = async (req, res) => {
   try {
-    const { name, email, contact, aadhar, address, password, role } = req.body;
+    const { name, email, contact, aadhar, address, password, role, position } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Get the Cloudinary URL of the uploaded file
@@ -109,6 +109,7 @@ exports.registerUser = async (req, res) => {
       aadhar,
       address,
       password: hashedPassword,
+      position: position,
       profilePicture, // Save the Cloudinary URL
       role: role,
     });
