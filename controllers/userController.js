@@ -253,3 +253,13 @@ exports.updateUser = async (req, res) => {
   }
 };
 
+
+exports.getAllUsers = async (req, res) => {
+  try {
+    const users = await User.find(); // Fetch all users from the database
+    res.status(200).json(users); // Return the list of users
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
