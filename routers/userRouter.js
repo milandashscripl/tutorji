@@ -27,7 +27,7 @@ const express = require('express');
 const multer = require('multer');
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const cloudinary = require('../config/cloudinaryConfig');
-const { registerUser, loginUser, getUserProfile, updateUser, getAllUsers } = require('../controllers/userController');
+const { registerUser, loginUser, getUserProfile, updateUser, getAllUsers, getAllTeachers, getAllStudents } = require('../controllers/userController');
 const router = express.Router();
 
 
@@ -48,5 +48,6 @@ router.post('/login', loginUser);
 router.get('/profile/:id', getUserProfile);
 router.patch('/update/:id', upload.single('profilePicture'), updateUser);
 router.get('/all', getAllUsers); // API endpoint to fetch all users
-
+router.get('/students', getAllStudents); // Get students only
+router.get('/teachers', getAllTeachers); // Get teachers only
 module.exports = router;
