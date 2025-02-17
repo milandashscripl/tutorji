@@ -4,7 +4,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const userRouter = require('./routers/userRouter');
 require('dotenv').config();
-const planRoutes = require("./routes/planRoutes");
+const planRoutes = require("./routers/planRoutes");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
