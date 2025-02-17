@@ -4,14 +4,13 @@ const planController = require("../controllers/planController");
 const multer = require("multer");
 const path = require("path");
 
-// Multer Storage Setup
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "uploads/");
+// Configure Cloudinary storage with multer
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'plan__banners', // Cloudinary folder name
+    allowed_formats: ['jpg', 'jpeg', 'png'], // Allowed file types
   },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname));
-  }
 });
 
 const upload = multer({ storage });
