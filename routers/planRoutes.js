@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const planController = require("../controllers/planController");
 const multer = require("multer");
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const cloudinary = require('../config/cloudinaryConfig');
 const path = require("path");
 
 // Configure Cloudinary storage with multer
