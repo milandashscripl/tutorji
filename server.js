@@ -4,6 +4,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const userRouter = require('./routers/userRouter');
 require('dotenv').config();
+const planRoutes = require("./routes/planRoutes");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -15,6 +16,7 @@ app.use(cors({
 app.use(bodyParser.json());
 app.use('/uploads', express.static('uploads'));
 app.use('/api/users', userRouter);
+app.use("/api/plans", planRoutes);
 
 // MongoDB Connection
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
