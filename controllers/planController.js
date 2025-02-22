@@ -40,10 +40,10 @@ exports.getPlanById = async (req, res) => {
     }
 
     res.json({
-      planName: req.body.planName,
-      planValue: req.body.planValue,
-      planDuration: req.body.planDuration,
-      planBanner: req.file.path // Store file path
+      planName: plan.planName,
+      planValue: plan.planValue,
+      planDuration: plan.planDuration,
+      planBanner: plan.planBanner // Store file path
     });
   } catch (err) {
     res.status(500).json({ error: err.message });
