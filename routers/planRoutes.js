@@ -20,7 +20,7 @@ const upload = multer({ storage });
 // Define Routes
 router.post("/", upload.single("planBanner"), planController.addPlan);
 router.get("/", planController.getPlans);
-router.get("/:id", planController.getPlans);
+router.get("/:id", planController.getPlanById);
 router.patch('/update/:id', upload.single('planBanner'), planController.updatePlan);
 
 module.exports = router;
