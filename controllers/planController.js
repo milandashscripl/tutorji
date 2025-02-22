@@ -28,6 +28,28 @@ exports.getPlans = async (req, res) => {
 };
 
 
+
+// get single plan 
+
+exports.getPlanById = async (req, res) => {
+  try {
+    const plan = await Plan.findById(req.params.id);
+
+    if (!plan) {
+      return res.status(404).json({ message: 'Plan not found' });
+    }
+
+    res.json({
+      planName: req.body.planName,
+      planValue: req.body.planValue,
+      planDuration: req.body.planDuration,
+      planBanner: req.file.path // Store file path
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
 // update plan 
 exports.updatePlan = async (req, res) => {
   try {
