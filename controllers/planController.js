@@ -1,13 +1,13 @@
 const Plan = require("../models/Plan");
 
-// Add a new plan
+// 📥 Add a new plan
 exports.addPlan = async (req, res) => {
   try {
     const newPlan = new Plan({
       planName: req.body.planName,
       planValue: req.body.planValue,
       planDuration: req.body.planDuration,
-      planBanner: req.file.path // Store file path
+      planBanner: req.file?.path, // Store file path if uploaded
     });
 
     await newPlan.save();
@@ -17,7 +17,7 @@ exports.addPlan = async (req, res) => {
   }
 };
 
-// Get all plans
+// 📄 Get all plans
 exports.getPlans = async (req, res) => {
   try {
     const plans = await Plan.find();
@@ -27,44 +27,34 @@ exports.getPlans = async (req, res) => {
   }
 };
 
-
-
-// get single plan 
-
+// 🔎 Get single plan by ID
 exports.getPlanById = async (req, res) => {
   try {
     const plan = await Plan.findById(req.params.id);
 
     if (!plan) {
-      return res.status(404).json({ message: 'Plan not found' });
+      return res.status(404).json({ message: "Plan not found" });
     }
 
-    res.json({
-      planName: plan.planName,
-      planValue: plan.planValue,
-      planDuration: plan.planDuration,
-      planBanner: plan.planBanner // Store file path
-    });
+    res.json(plan);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
 
-// update plan 
+// 🛠️ Update a plan
 exports.updatePlan = async (req, res) => {
   try {
     const planId = req.params.id;
 
-    // Collect updated data from the request body
     const updatedData = {
       planName: req.body.planName,
       planValue: req.body.planValue,
       planDuration: req.body.planDuration,
     };
 
-    // If a new profile picture is uploaded, update it
     if (req.file) {
-      updatedData.planBanner = req.file.path; // Cloudinary or file path
+      updatedData.planBanner = req.file.path; // Update banner if uploaded
     }
 
     // Remove undefined fields
@@ -74,14 +64,30 @@ exports.updatePlan = async (req, res) => {
       }
     });
 
-    // Update the user in the database
-    const plan = await Plan.findByIdAndUpdate(planId, updatedData, { new: true });
+    const updatedPlan = await Plan.findByIdAndUpdate(planId, updatedData, { new: true });
 
-    if (!plan) {
-      return res.status(404).json({ message: 'No such a plan found' });
+    if (!updatedPlan) {
+      return res.status(404).json({ message: "No such plan found" });
     }
 
-    res.json({ message: 'Plan updated successfully!', plan });
+    res.json({ message: "Plan updated successfully!", plan: updatedPlan });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+// ❌ Delete a plan
+exports.deletePlan = async (req, res) => {
+  try {
+    const planId = req.params.id;
+
+    const deletedPlan = await Plan.findByIdAndDelete(planId);
+
+    if (!deletedPlan) {
+      return res.status(404).json({ message: "Plan not found" });
+    }
+
+    res.json({ message: "Plan deleted successfully!" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

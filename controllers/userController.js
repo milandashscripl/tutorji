@@ -163,4 +163,3 @@ exports.getAllStudents = async (req, res) => {
   }
 };
 
-
