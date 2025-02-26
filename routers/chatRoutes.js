@@ -1,13 +1,12 @@
 const express = require('express');
-const { sendMessage, getMessages } = require('../controllers/chatController');
-const { protect } = require('../middleware/authMiddleware'); // Auth middleware for token validation
-
 const router = express.Router();
+const { sendMessage, getMessages } = require('../controllers/chatController');
+const { protect } = require('../middleware/authMiddleware');
 
-// 🚀 Send message (User/Admin)
+// 📨 Send a message
 router.post('/', protect, sendMessage);
 
-// 📄 Get message history between user and admin
-router.get('/:userId', protect, getMessages);
+// 📜 Get conversation messages
+router.get('/:receiverId', protect, getMessages);
 
 module.exports = router;

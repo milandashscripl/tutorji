@@ -1,32 +1,43 @@
 const Chat = require('../models/Chat');
+const User = require('../models/User');
 
-// 📝 Send a message
+// 📥 Send a message
 exports.sendMessage = async (req, res) => {
-  try {
-    const { receiverId, message } = req.body;
-    const senderId = req.user.id; // User ID from token middleware
+  const { receiverId, message } = req.body;
 
-    const newMessage = await Chat.create({ senderId, receiverId, message });
-    res.status(201).json({ success: true, chat: newMessage });
+  if (!receiverId || !message) {
+    return res.status(400).json({ message: 'Receiver ID and message are required.' });
+  }
+
+  try {
+    const newMessage = await Chat.create({
+      sender: req.user._id,
+      receiver: receiverId,
+      message,
+    });
+
+    res.status(201).json(newMessage);
   } catch (err) {
-    res.status(500).json({ success: false, message: 'Message sending failed', error: err.message });
+    console.error(err);
+    res.status(500).json({ message: 'Failed to send message.' });
   }
 };
 
-// 📩 Get messages between user and admin
+// 📄 Get all messages between user and admin
 exports.getMessages = async (req, res) => {
-  try {
-    const { userId } = req.params;
+  const { receiverId } = req.params;
 
+  try {
     const messages = await Chat.find({
       $or: [
-        { senderId: userId, receiverId: req.user.id },
-        { senderId: req.user.id, receiverId: userId },
+        { sender: req.user._id, receiver: receiverId },
+        { sender: receiverId, receiver: req.user._id },
       ],
-    }).sort({ timestamp: 1 });
+    }).sort('createdAt');
 
-    res.status(200).json({ success: true, messages });
+    res.json(messages);
   } catch (err) {
-    res.status(500).json({ success: false, message: 'Failed to retrieve messages', error: err.message });
+    console.error(err);
+    res.status(500).json({ message: 'Failed to fetch messages.' });
   }
 };
