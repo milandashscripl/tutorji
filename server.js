@@ -5,7 +5,6 @@ const bodyParser = require('body-parser');
 const userRouter = require('./routers/userRouter');
 require('dotenv').config();
 const planRoutes = require("./routers/planRoutes");
-const chatRoutes = require('./routers/chatRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -18,7 +17,6 @@ app.use(bodyParser.json());
 app.use('/uploads', express.static('uploads'));
 app.use('/api/users', userRouter);
 app.use("/api/plans", planRoutes);
-app.use('/api/chat', chatRoutes);
 
 
 // MongoDB Connection
