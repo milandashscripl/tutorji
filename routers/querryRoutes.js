@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { createQuery, getAllQueries, getUserQueries } = require("../controllers/queryController");
+const { createQuery, getAllQueries, getUserQueries } = require("../controllers/querryController");
 const { protect, admin } = require("../middleware/authMiddleware"); 
 
 // 📝 User submits a query
