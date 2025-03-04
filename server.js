@@ -17,7 +17,7 @@ app.use(bodyParser.json());
 app.use('/uploads', express.static('uploads'));
 app.use('/api/users', userRouter);
 app.use("/api/plans", planRoutes);
-app.use("/api/queries",querryRoutes );
+// app.use("/api/queries",querryRoutes );
 
 
 // MongoDB Connection
