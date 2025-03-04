@@ -1,15 +1,15 @@
-// const express = require("express");
-// const router = express.Router();
-// const { createQuery, getAllQueries, getUserQueries } = require("../controllers/querryController");
-// const { protect, admin } = require("../middleware/authMiddleware"); 
-   
-// // 📝 User submits a query
-// router.post("/submit", protect, createQuery);
+const express = require("express");
+const router = express.Router();
+const { createQuery, getAllQueries, getUserQueries } = require("../controllers/querryController");
+const { protect, admin } = require("../middleware/authMiddleware");
 
-// // 📜 Admin fetches all queries
-// router.get("/all", protect, admin, getAllQueries);
+// ✅ User submits a query
+router.post("/submit", protect, createQuery);
 
-// // 👤 User fetches their own queries ..
-// router.get("/my-queries", protect, getUserQueries);
+// ✅ Admin fetches all queries
+router.get("/all", protect, admin, getAllQueries);
 
-// module.exports = router;
+// ✅ User fetches their own queries
+router.get("/my-queries", protect, getUserQueries);
+
+module.exports = router;
