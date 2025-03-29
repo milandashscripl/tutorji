@@ -6,8 +6,11 @@ const jwt = require('jsonwebtoken');
 // Register User
 exports.registerUser = async (req, res) => {
   try {
-    const { name, email, contact, aadhar, address, password, role, campusName, seatNumber } = req.body;
+    const { name, email, contact, aadhar, address, password, campusName, seatNumber } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Generate studentId dynamically
+    const studentId = `${campusName}-${seatNumber}`;
 
     // Get the Cloudinary URL of the uploaded file
     const profilePicture = req.file?.path;
@@ -21,6 +24,7 @@ exports.registerUser = async (req, res) => {
       password: hashedPassword,
       campusName,
       seatNumber,
+      studentId, // Auto-generated
       profilePicture, // Save the Cloudinary URL
     });
 
@@ -30,6 +34,7 @@ exports.registerUser = async (req, res) => {
     res.status(400).json({ error: err.message });
   }
 };
+
 
 
 
@@ -56,6 +61,7 @@ exports.loginUser = async (req, res) => {
                 address: user.address,
                 campusName: user.campusName,
                 seatNumber: user.seatNumber,
+                studentId: user.studentId,
                 profilePicture: user.profilePicture,
             },
             userId: user._id, // Include userId for backward compatibility
@@ -83,6 +89,7 @@ exports.getUserProfile = async (req, res) => {
       address: user.address,
       campusName: user.campusName,
       seatNumber: user.seatNumber,
+      studentId: user.studentId,
       profilePicture: user.profilePicture,
     });
   } catch (err) {
@@ -98,6 +105,12 @@ exports.updateUser = async (req, res) => {
   try {
     const userId = req.params.id;
 
+    // Fetch the existing user data
+    const existingUser = await User.findById(userId);
+    if (!existingUser) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
     // Collect updated data from the request body
     const updatedData = {
       name: req.body.name,
@@ -111,6 +124,14 @@ exports.updateUser = async (req, res) => {
     if (req.file) {
       updatedData.profilePicture = req.file.path; // Cloudinary or file path
     }
+
+    // If campusName or seatNumber is updated, regenerate studentId
+    const newCampusName = req.body.campusName || existingUser.campusName;
+    const newSeatNumber = req.body.seatNumber || existingUser.seatNumber;
+
+    updatedData.campusName = newCampusName;
+    updatedData.seatNumber = newSeatNumber;
+    updatedData.studentId = `${newCampusName}-${newSeatNumber}`;
 
     // Hash password if provided
     if (req.body.password) {
@@ -127,15 +148,12 @@ exports.updateUser = async (req, res) => {
     // Update the user in the database
     const user = await User.findByIdAndUpdate(userId, updatedData, { new: true });
 
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
-    }
-
     res.json({ message: 'User updated successfully!', user });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
+
 
 
 exports.getAllUsers = async (req, res) => {
