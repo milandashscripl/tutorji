@@ -6,10 +6,10 @@ const userSchema = new mongoose.Schema({
     contact: { type: String, required: true },
     aadhar: { type: String, required: true },
     address: { type: String, required: true },
-    position: { type: String, enum: ['teacher', 'student'], default: 'student' }, // Position field
+    campusName: {type: String, required: true},
+    seatNumber: {type: Number, required: true, unique: true },
     profilePicture: { type: String },
     password: { type: String, required: true },
-    role: { type: String, enum: ['admin', 'user'], default: 'user' }, // Role field
 });
 
 module.exports = mongoose.model('User', userSchema);

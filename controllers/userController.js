@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 // Register User
 exports.registerUser = async (req, res) => {
   try {
-    const { name, email, contact, aadhar, address, password, role, position } = req.body;
+    const { name, email, contact, aadhar, address, password, role, campusName, seatNumber } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Get the Cloudinary URL of the uploaded file
@@ -19,9 +19,9 @@ exports.registerUser = async (req, res) => {
       aadhar,
       address,
       password: hashedPassword,
-      position: position,
+      campusName,
+      seatNumber,
       profilePicture, // Save the Cloudinary URL
-      role: role,
     });
 
     await newUser.save();
@@ -54,8 +54,9 @@ exports.loginUser = async (req, res) => {
                 contact: user.contact,
                 aadhar: user.aadhar,
                 address: user.address,
+                campusName: user.campusName,
+                seatNumber: user.seatNumber,
                 profilePicture: user.profilePicture,
-                role: user.role
             },
             userId: user._id, // Include userId for backward compatibility
         });
@@ -80,8 +81,9 @@ exports.getUserProfile = async (req, res) => {
       contact: user.contact,
       aadhar: user.aadhar,
       address: user.address,
+      campusName: user.campusName,
+      seatNumber: user.seatNumber,
       profilePicture: user.profilePicture,
-      role: user.role
     });
   } catch (err) {
     res.status(500).json({ error: err.message });
